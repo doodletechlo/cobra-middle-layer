@@ -4,7 +4,7 @@ var debug = require('debug')('main');
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
-    res.send('OK success');
+    res.send('OK 200 success');
 });
 
 module.exports = router;
