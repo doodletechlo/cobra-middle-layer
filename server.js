@@ -1,4 +1,5 @@
 var express = require('express');
+var exec = require('child_process').exec;
 var http = require('http');
 var path = require('path');
 var logger = require('morgan');
@@ -28,6 +29,17 @@ app.use(bodyParser.urlencoded({
 
 app.use(cookieParser());
 
+app.use('/api/', function(req, res) {
+    exec('git log --stat -1', function(error, stdout, stderr) {
+        if (error) {
+            res.status(404);
+        } else {
+            res.status(200);
+        }
+
+        res.send('<div style="white-space: pre">' + stdout + '</div>');
+    });
+});
 app.use('/api/users', users);
 
 // catch 404 and forward to error handler
