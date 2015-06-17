@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var request = require('request');
 var debug = require('debug')('main');
 
-var users = require('./server/users-route');
+var api = require('./server/api-route');
 
 var app = express();
 
@@ -16,7 +16,7 @@ var app = express();
 app.set('views', path.join(__dirname, ''));
 app.set('view engine', 'jade');
 
-app.use('/javaapi', function(req, res) {
+app.use('/api/javaapi', function(req, res) {
     var url = '/javaapi' + req.url;
     debug('app.js creditcom', url, req.method);
     req.pipe(request(url)).pipe(res);
@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({
 
 app.use(cookieParser());
 
-app.use('/api/', function(req, res) {
+app.use('/api/status', function(req, res) {
     exec('git log --stat -1', function(error, stdout, stderr) {
         if (error) {
             res.status(404);
@@ -40,11 +40,12 @@ app.use('/api/', function(req, res) {
         res.send('<div style="white-space: pre">' + stdout + '</div>');
     });
 });
-app.use('/api/users', users);
+
+app.use('/api/*', api);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    res.send('Not Found');
+    res.status(404).json({error: 'resource not found'});
 });
 
 /**
