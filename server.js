@@ -1,12 +1,12 @@
 var express = require('express');
 var http = require('http');
 var path = require('path');
-var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var debug = require('debug')('main');
 
 var api = require('./api/api-route');
+var logger = require('./api/logging');
 
 var app = express();
 
@@ -25,6 +25,7 @@ app.use('/api', api);
 
 // catch 404 and forward to error handler
 app.use('/', function(req, res, next) {
+    logger.insert(req.url, req.method);
     res.status(404).json({
         code: 'unknownResource',
         description: 'resource not found'
