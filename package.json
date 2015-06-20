@@ -6,9 +6,10 @@
   "author": "Esteban Leon",
   "private": true,
   "scripts": {
-    "start": "DEBUG=main nodemon -e js --exec sh bin/execute.sh"
+    "start": "DEBUG=main nodemon -e js --exec sh bin/execute.sh",
+    "test" : "jasmine-node --autotest --color --verbose spec"
   },
-  "devDependencies" : {
+  "devDependencies": {
     "nodemon": "^1.3.7",
     "jshint": "^2.7.0"
   },
@@ -30,6 +31,7 @@
     "q": "^1.4.1",
     "request": "^2.57.0",
     "restify": "^3.0.2",
-    "serve-favicon": "~2.2.0"
+    "serve-favicon": "~2.2.0",
+    "jasmine-node": "~1.14.5"
   }
 }
