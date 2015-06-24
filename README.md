@@ -12,7 +12,7 @@ npm install || npm run dev
 npm start
 ```
 
-#Local Start Instructions (Mock)
+##Local Start Instructions (Mock)
 ``` javascript
 npm run local
 ``` 
