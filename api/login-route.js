@@ -15,7 +15,7 @@ router.post('/', function(req, res, next) {
             res.json(token);
         },
         function(err) {
-            res.status(404).json(err);
+            res.status(401).json(err);
 
         });
 });

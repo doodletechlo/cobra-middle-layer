@@ -3,7 +3,7 @@ mockery.enable();
 
 var test = require('../../api/login/index');
 
-describe('mydesc', function(){
+describe('login service', function(){
     it('test the username and password', function(next){
         var config = {
             username: 'testuser',
@@ -20,5 +20,4 @@ describe('mydesc', function(){
 
         });
     });
-    it('test spec');
 });
