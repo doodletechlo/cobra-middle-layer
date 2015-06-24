@@ -1,3 +1,5 @@
+var mockery = require('mockery');
+mockery.enable();
 function test(s) {
     return s +1;
 }

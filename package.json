@@ -7,11 +7,12 @@
   "private": true,
   "scripts": {
     "start": "DEBUG=main nodemon -e js --exec sh bin/execute.sh",
-    "test" : "jasmine-node --autotest --color --verbose spec"
+    "test": "jasmine-node --autotest --color --verbose spec"
   },
   "devDependencies": {
-    "nodemon": "^1.3.7",
-    "jshint": "^2.7.0"
+    "jshint": "^2.7.0",
+    "mockery": "^1.4.0",
+    "nodemon": "^1.3.7"
   },
   "dependencies": {
     "async": "^0.9.0",
