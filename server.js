@@ -8,6 +8,7 @@ var debug = require('debug')('main');
 var login = require('./api/login-route');
 var version = require('./api/version-route');
 var logger = require('./api/logging');
+var mock = require('./mock');
 
 var app = express();
 
@@ -21,9 +22,12 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(cookieParser());
-
-app.use('/api/login', login);
-app.use('/api/version', version);
+if (process.env.ENV === 'local') {
+    app.use('/api', mock);
+} else {
+    app.use('/api/login', login);
+    app.use('/api/version', version);
+}
 
 // catch 404 and forward to error handler
 app.use('/', function(req, res, next) {
