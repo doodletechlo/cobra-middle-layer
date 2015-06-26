@@ -28,7 +28,7 @@ function getMemberToken(params) {
             });
             if (token) {
                 deferred.resolve({
-                    token: token
+                    token: bcrypt.hashSync(token, 8)
                 });
             } else {
                 deferred.reject({
