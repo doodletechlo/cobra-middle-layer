@@ -1,5 +1,15 @@
 var debug = require('debug')('main');
+var uuid = require('node-uuid');
+var bcrypt = require('bcrypt');
 var q = require('q');
+
+var common = require('../common');
+
+var table = 'dt-user';
+
+module.exports = {
+    getMemberToken: getMemberToken
+};
 
 function getMemberToken(params) {
     var deferred = q.defer();
@@ -17,6 +27,34 @@ function getMemberToken(params) {
     return deferred.promise;
 }
 
-module.exports = {
-    getMemberToken: getMemberToken
-};
+createUser({
+    username: 'testuser',
+    password: 'password'
+});
+
+function createUser(params) {
+
+    if (params.password && params.username) {
+        bcrypt.hash(params.password, 8, function(err, hash) {
+            var item = {
+                username: {
+                    'S': params.username
+                },
+                customerId: {
+                    'S': uuid.v4()
+                },
+                password: {
+                    'S': hash
+                },
+                createDate: {
+                    'S': new Date().toString()
+                },
+                updateDate: {
+                    'S': new Date().toString()
+                }
+            };
+            common.db.putItem(item, table);
+        });
+    }
+
+}

@@ -1,17 +1,43 @@
 var AWS = require('aws-sdk');
-var dataHelper= require('./dataHelper');
+var debug = require('debug')('main');
+var q = require('q');
+var dataHelper = require('./dataHelper');
 AWS.config.update({
     region: 'us-west-2'
 });
 
-var dynamodb = new AWS.DynamoDB();
+var db = new AWS.DynamoDB();
 
 module.exports = {
-    read: read,
-    create: create
+    scan: scan,
+    getItem: getItem,
+    putItem: putItem
 };
 
-function read(table) {
+function getItem(key, table) {
+    var deferred = q.defer();
+
+    var params = {
+        TableName: table,
+        Key: key
+    };
+
+    db.getItem(params, function(err, data) {
+        if (err) {
+            deferred.reject(err);
+        } else {
+            try {
+                dataHelper.removeKey(data.Item);
+                deferred.resolve(data.Item);
+            } catch (e) {
+                deferred.reject(e);
+            }
+        }
+    });
+    return deferred.promise;
+}
+
+function scan(table) {
     var deferred = q.defer();
     var params = {
         TableName: table
@@ -27,14 +53,14 @@ function read(table) {
     return deferred.promise;
 }
 
-function create(item, table) {
-    debug('create: ' + JSON.stringify(data));
+function putItem(item, table) {
     var deferred = q.defer();
 
     db.putItem({
         TableName: table,
         Item: item
     }, function(err, data) {
+        debug('putitem: ', err, data);
         if (err) {
             deferred.reject(err);
         } else {

@@ -6,11 +6,11 @@ var debug = require('debug')('main');
 var router = express.Router();
 
 // private dependencies
-var authentication = require('./login');
+var login = require('./login');
 
 router.post('/', function(req, res, next) {
     debug('entered login');
-    authentication.getMemberToken(req.body).then(
+    login.getMemberToken(req.body).then(
         function(token) {
             res.json(token);
         },
