@@ -9,7 +9,7 @@ var router = express.Router();
 var login = require('./login');
 
 router.post('/', function(req, res, next) {
-    debug('entered login');
+    debug('entered login', req.body);
     login.getMemberToken(req.body).then(
         function(token) {
             res.json(token);
