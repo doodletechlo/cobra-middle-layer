@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var debug = require('debug')('main');
+var request=  require('request');
 
 var login = require('./api/login-route');
 var version = require('./api/version-route');
@@ -11,6 +12,12 @@ var logger = require('./api/logging');
 var config = require('./api/common/config');
 
 var app = express();
+
+app.use('/api', function(req, res) {
+    var url = config.getDomain(process.env.ENV) + req.url;
+    debug('Request: ' + url, req.method);
+    req.pipe(request(url)).pipe(res);
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -22,15 +29,10 @@ app.use(cookieParser());
 app.use('/api/login', login);
 app.use('/api/version', version);
 
-app.use('/api', function(req, res) {
-    var url = config.getDomain(process.env.ENV) + '/api' + req.url;
-    debug('Request: ' + url);
-    req.pipe(request(url)).pipe(res);
-});
 
 // catch 404 and forward to error handler
 app.use('/', function(req, res, next) {
-    logger.insert(req.url, req.method);
+    //logger.insert(req.url, req.method);
     res.status(404).json({
         code: 'unknownResource',
         description: 'resource not found'

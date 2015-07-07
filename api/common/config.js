@@ -1,15 +1,16 @@
+var debug = require('debug')('main');
 module.exports ={
     getDomain: getDomain
 };
 
 var domain = {
-    prod: 'http://de74xyk8y8kp9.cloudfront.net',
+    dev: 'http://52.27.28.172',
     local: 'http://localhost:3006'
 };
 
-function getDomain(domain){
-    var url = domain.prod;
-    if(domain && domain === 'local'){
+function getDomain(param){
+    var url = domain.dev;
+    if(param=== 'local'){
         url = domain.local;
     }
     return url;
