@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var debug = require('debug')('main');
 var request=  require('request');
 
-var login = require('./api/login-route');
+var user = require('./api/user-route');
 var registration = require('./api/registration-route');
 var version = require('./api/version-route');
 var logger = require('./api/logging');
@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({
 
 app.use(cookieParser());
 
-app.use('/api/login', login);
+app.use('/api/user/', user);
 app.use('/api/registration', registration);
 app.use('/api/version', version);
 

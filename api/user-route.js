@@ -8,7 +8,7 @@ var router = express.Router();
 // private dependencies
 var login = require('./login');
 
-router.post('/', function(req, res, next) {
+router.post('/login', function(req, res, next) {
     debug('entered login', req.body);
     login.getToken(req.body).then(
         function(token) {
