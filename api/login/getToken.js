@@ -9,7 +9,7 @@ function getToken(params) {
     var deferred = q.defer();
     if (!params || !params.password || !params.username) {
         deferred.reject({
-            code: 'missingFields',
+            error: 'missingFields',
             description: 'Required Fields: username, password'
         });
     } else {

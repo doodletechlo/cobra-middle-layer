@@ -10,7 +10,7 @@ function registerUser(params) {
     var deferred = q.defer();
     if (!params || !params.username || !params.password || !params.firstName || !params.lastName || !params.email) {
         deferred.reject({
-            code: 'missingFields',
+            error: 'missingFields',
             description: 'Required Fields: username, password, firstName, lastName, email'
         });
     } else {
