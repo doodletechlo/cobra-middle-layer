@@ -7,17 +7,18 @@ var debug = require('debug')('main');
 var request=  require('request');
 
 var login = require('./api/login-route');
+var registration = require('./api/registration-route');
 var version = require('./api/version-route');
 var logger = require('./api/logging');
 var config = require('./api/common/config');
 
 var app = express();
 
-app.use('/api', function(req, res) {
-    var url = config.getDomain(process.env.ENV) + req.url;
-    debug('Request: ' + url, req.method);
-    req.pipe(request(url)).pipe(res);
-});
+//app.use('/api', function(req, res) {
+    //var url = config.getDomain(process.env.ENV) + req.url;
+    //debug('Request: ' + url, req.method);
+    //req.pipe(request(url)).pipe(res);
+//});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -27,8 +28,8 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 
 app.use('/api/login', login);
+app.use('/api/registration', registration);
 app.use('/api/version', version);
-
 
 // catch 404 and forward to error handler
 app.use('/', function(req, res, next) {

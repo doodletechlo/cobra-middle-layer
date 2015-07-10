@@ -6,7 +6,7 @@ var debug = require('debug')('main');
 var chalk = require('chalk');
 var lo = require('lodash');
 
-function httpCall(settings, callback) {
+function httpCall(settings) {
     var data = '';
     var deferred = q.defer();
     if(settings.body && lo.isObject(settings.body)){
