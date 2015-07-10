@@ -1,21 +1,28 @@
 // 3rd party dependencies
 var querystring = require('querystring');
-var http = require('https');
+var http = require('http');
 var q = require('q');
 var debug = require('debug')('main');
 var chalk = require('chalk');
 var lo = require('lodash');
 
+var config = require('./config');
+
 function httpCall(settings) {
     var data = '';
     var deferred = q.defer();
-    if(settings.body && lo.isObject(settings.body)){
+    if (settings.body && lo.isObject(settings.body)) {
         settings.body = JSON.stringify(settings.body);
     }
+    if (!settings.headers) settings.headers = {};
+    settings.headers['Content-Type'] = settings.headers['Content-Type'] || 'application/json';
+    settings = config.getDomain(settings);
+
     console.log(chalk.inverse('Calling: ' + settings.host + ' ' + settings.path + ' ' + settings.method + ' '));
     debug('httpService: httpCall()', settings);
+    var output = 'Route: ' + settings.path + ' ' + settings.method;
     var request = http.request(settings, function(res) {
-        var output = 'Route: ' + settings.path + ' ' + settings.method + ' ' + res.statusCode;
+        output += ' ' + res.statusCode;
         if (res.statusCode == 200) {
             console.log(chalk.bgBlue(output));
         } else {

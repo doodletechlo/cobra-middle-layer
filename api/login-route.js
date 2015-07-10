@@ -10,7 +10,7 @@ var login = require('./login');
 
 router.post('/', function(req, res, next) {
     debug('entered login', req.body);
-    login.getMemberToken(req.body).then(
+    login.getToken(req.body).then(
         function(token) {
             res.json(token);
         },

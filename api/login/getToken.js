@@ -3,13 +3,11 @@ var q = require('q');
 
 var common = require('../common');
 
-module.exports = {
-    getMemberToken: getMemberToken
-};
+module.exports = getToken;
 
-function getMemberToken(params) {
+function getToken(params) {
     var deferred = q.defer();
-    if (!params.password || !params.username) {
+    if (!params || !params.password || !params.username) {
         deferred.reject({
             code: 'missingFields',
             description: 'Required Fields: username, password'
@@ -18,11 +16,7 @@ function getMemberToken(params) {
 
         var httpSettings = {
             path: '/user/login',
-            host: common.config.getDomain(),
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
             body: params
         };
         common.httpService.httpCall(httpSettings).then(
