@@ -19,8 +19,8 @@ function getToken(params) {
             body: params
         };
         common.httpService.httpCall(validate).then(
-            function(customerId) {
-                params.customerId = customerId;
+            function(data) {
+                params.customerId = data.customerId;
                 var tokenSettings = {
                     path: '/token/getToken',
                     method: 'POST',

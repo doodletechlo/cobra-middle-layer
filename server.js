@@ -11,6 +11,7 @@ var registration = require('./api/registration-route');
 var version = require('./api/version-route');
 var logger = require('./api/logging');
 var config = require('./api/common/config');
+var token= require('./api/token');
 
 var app = express();
 
