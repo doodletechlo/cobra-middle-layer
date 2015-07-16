@@ -5,11 +5,13 @@ var common = require('../common');
 
 module.exports = getUser;
 
-function getUser(headers) {
+function getUser(params) {
     var settings = {
         path: '/profile/getuser',
         method: 'GET',
-        headers: { 'customerId': headers.customerId},
+        headers: {
+            customerId: params.customerId
+        }
     };
     return common.httpService.httpCall(settings);
 }

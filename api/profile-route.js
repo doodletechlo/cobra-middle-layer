@@ -10,7 +10,10 @@ var profile = require('./profile');
 
 router.get('/getuser', function(req, res, next) {
     debug('entered profile', req.body, req.headers);
-    profile.getUser(req.headers).then(
+    var params = {
+        customerId : req.headers.customerId
+    };
+    profile.getUser(params).then(
         function(data) {
             res.json(data);
         },
