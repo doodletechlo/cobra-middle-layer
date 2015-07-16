@@ -4,21 +4,22 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var debug = require('debug')('main');
-var request=  require('request');
+var request = require('request');
 
 var user = require('./api/user-route');
 var registration = require('./api/registration-route');
 var version = require('./api/version-route');
 var logger = require('./api/logging');
 var config = require('./api/common/config');
-var token= require('./api/token');
+var token = require('./api/token');
+var profile = require('./api/profile');
 
 var app = express();
 
 //app.use('/api', function(req, res) {
-    //var url = config.getDomain(process.env.ENV) + req.url;
-    //debug('Request: ' + url, req.method);
-    //req.pipe(request(url)).pipe(res);
+//var url = config.getDomain(process.env.ENV) + req.url;
+//debug('Request: ' + url, req.method);
+//req.pipe(request(url)).pipe(res);
 //});
 
 app.use(bodyParser.json());
@@ -28,9 +29,21 @@ app.use(bodyParser.urlencoded({
 
 app.use(cookieParser());
 
-app.use('/api/user/', user);
 app.use('/api/registration', registration);
 app.use('/api/version', version);
+app.use('/api/user/', user);
+app.use('*', function(req, res, next) {
+    token.validate(req.headers).then(function(val) {
+        req.headers.customerId = val;
+        next();
+    }, function(err) {
+        res.status(401).json({
+            code: 'invalidToken',
+            description: 'Valid Token Required'
+        })
+    });
+});
+app.use('/api/profile/', profile);
 
 // catch 404 and forward to error handler
 app.use('/', function(req, res, next) {
