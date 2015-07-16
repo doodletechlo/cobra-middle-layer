@@ -10,9 +10,9 @@ var profile = require('./profile');
 
 router.get('/getuser', function(req, res, next) {
     debug('entered profile', req.body, req.headers);
-    profile.getUser(req.body, req.headers).then(
-        function(token) {
-            res.json(token);
+    profile.getUser(req.headers).then(
+        function(data) {
+            res.json(data);
         },
         function(err) {
             res.status(401).json(err);
