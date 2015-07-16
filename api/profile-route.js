@@ -8,9 +8,9 @@ var router = express.Router();
 // private dependencies
 var profile = require('./profile');
 
-router.post('/getuser', function(req, res, next) {
-    debug('entered login', req.body);
-    profile.getUser(req.body).then(
+router.get('/getuser', function(req, res, next) {
+    debug('entered profile', req.body, req.headers);
+    profile.getUser(req.body, req.headers).then(
         function(token) {
             res.json(token);
         },

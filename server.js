@@ -12,7 +12,7 @@ var version = require('./api/version-route');
 var logger = require('./api/logging');
 var config = require('./api/common/config');
 var token = require('./api/token');
-var profile = require('./api/profile');
+var profile = require('./api/profile-route');
 
 var app = express();
 
@@ -33,14 +33,15 @@ app.use('/api/registration', registration);
 app.use('/api/version', version);
 app.use('/api/user/', user);
 app.use('*', function(req, res, next) {
+    debug('checking token', req.headers);
     token.validate(req.headers).then(function(val) {
-        req.headers.customerId = val;
+        req.headers.customerId = val.customerId;
         next();
     }, function(err) {
         res.status(401).json({
             code: 'invalidToken',
             description: 'Valid Token Required'
-        })
+        });
     });
 });
 app.use('/api/profile/', profile);
