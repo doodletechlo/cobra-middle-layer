@@ -11,9 +11,25 @@ var profile = require('./profile');
 router.get('/getuser', function(req, res, next) {
     debug('entered profile', req.body, req.headers);
     var params = {
-        customerId : req.headers.customerId
+        customerId : req.headers.customerId,
     };
     profile.getUser(params).then(
+        function(data) {
+            res.json(data);
+        },
+        function(err) {
+            res.status(401).json(err);
+
+        });
+});
+
+router.post('/update', function(req, res, next) {
+    debug('entered profile', req.body, req.headers);
+    var params = {
+        customerId : req.headers.customerId,
+        data: req.body
+    };
+    profile.update(params).then(
         function(data) {
             res.json(data);
         },
