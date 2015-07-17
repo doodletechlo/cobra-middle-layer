@@ -9,11 +9,8 @@ var router = express.Router();
 var profile = require('./profile');
 
 router.get('/getuser', function(req, res, next) {
-    debug('entered profile', req.body, req.headers);
-    var params = {
-        customerId : req.headers.customerId,
-    };
-    profile.getUser(params).then(
+    debug('entered profile', req.body);
+    profile.getUser(req.body).then(
         function(data) {
             res.json(data);
         },
@@ -24,12 +21,8 @@ router.get('/getuser', function(req, res, next) {
 });
 
 router.post('/updatepassword', function(req, res, next) {
-    var params = {
-        customerId : req.headers.customerId,
-        data: req.body
-    };
-    debug('entered profile', params);
-    profile.updatePassword(params).then(
+    debug('entered profile', req.body);
+    profile.updatePassword(req.body).then(
         function(data) {
             res.json(data);
         },
@@ -38,13 +31,10 @@ router.post('/updatepassword', function(req, res, next) {
 
         });
 });
+
 router.post('/updateemail', function(req, res, next) {
-    var params = {
-        customerId : req.headers.customerId,
-        data: req.body
-    };
     debug('entered profile', params);
-    profile.updateEmail(params).then(
+    profile.updateEmail(req.body).then(
         function(data) {
             res.json(data);
         },

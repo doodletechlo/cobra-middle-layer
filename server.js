@@ -29,7 +29,7 @@ app.use('/api/user/', api.user);
 app.use('*', function(req, res, next) {
     debug('checking token', req.headers);
     api.token.validate(req.headers).then(function(val) {
-        req.headers.customerId = val.customerId;
+        req.body.customerId = val.customerId;
         next();
     }, function(err) {
         res.status(401).json({
