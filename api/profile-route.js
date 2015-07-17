@@ -22,14 +22,22 @@ router.get('/getuser', function(req, res, next) {
 
 router.post('/updatepassword', function(req, res, next) {
     debug('entered profile', req.body);
-    profile.updatePassword(req.body).then(
-        function(data) {
-            res.end();
-        },
-        function(err) {
-            res.status(401).json(err);
 
+    if (!req.body.newPassword || !req.body.oldPassword) {
+        res.status(401).json({
+            code: "missingFields",
+            description:"Required fields: oldPassword, newPassword"
         });
+    } else {
+        profile.updatePassword(req.body).then(
+            function(data) {
+                res.end();
+            },
+            function(err) {
+                res.status(401).json(err);
+
+            });
+    }
 });
 
 router.post('/updateemail', function(req, res, next) {

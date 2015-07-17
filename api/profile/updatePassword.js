@@ -6,8 +6,20 @@ var common = require('../common');
 module.exports = updatePassword;
 
 function updatePassword(params) {
+    var deferred = q.defer();
     debug('updatePassword', params);
-    var settings = {
+
+    var checkpassword = {
+        path: '/user/checkpassword',
+        method: 'POST',
+        headers: {
+            customerId: params.customerId
+        },
+        body: params
+
+    };
+
+    var update = {
         path: '/user/updatepassword',
         method: 'POST',
         headers: {
@@ -16,5 +28,17 @@ function updatePassword(params) {
         body: params
 
     };
-    return common.httpService.httpCall(settings);
+
+    common.httpService.httpCall(checkpassword).then(function() {
+            common.httpService.httpCall(update).then(function() {
+                deferred.resolve();
+            });
+        },
+        function() {
+            deferred.reject({
+                code: "invalidPassword",
+                description: "Wrong password"
+            });
+        });
+    return deferred.promise;
 }
