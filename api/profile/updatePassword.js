@@ -3,11 +3,12 @@ var q = require('q');
 
 var common = require('../common');
 
-module.exports = update;
+module.exports = updatePassword;
 
-function update(params) {
+function updatePassword(params) {
+    debug('updatePassword', params);
     var settings = {
-        path: '/profile/update',
+        path: '/user/updatepassword',
         method: 'POST',
         headers: {
             customerId: params.customerId

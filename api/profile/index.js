@@ -1,3 +1,5 @@
 module.exports = {
-    getUser: require('./getUser')
+    getUser: require('./getUser'),
+    updateEmail: require('./updateEmail'),
+    updatePassword: require('./updatePassword'),
 };

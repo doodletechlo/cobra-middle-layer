@@ -23,13 +23,28 @@ router.get('/getuser', function(req, res, next) {
         });
 });
 
-router.post('/update', function(req, res, next) {
-    debug('entered profile', req.body, req.headers);
+router.post('/updatepassword', function(req, res, next) {
     var params = {
         customerId : req.headers.customerId,
         data: req.body
     };
-    profile.update(params).then(
+    debug('entered profile', params);
+    profile.updatePassword(params).then(
+        function(data) {
+            res.json(data);
+        },
+        function(err) {
+            res.status(401).json(err);
+
+        });
+});
+router.post('/updateemail', function(req, res, next) {
+    var params = {
+        customerId : req.headers.customerId,
+        data: req.body
+    };
+    debug('entered profile', params);
+    profile.updateEmail(params).then(
         function(data) {
             res.json(data);
         },

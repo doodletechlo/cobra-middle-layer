@@ -6,18 +6,12 @@ var bodyParser = require('body-parser');
 var debug = require('debug')('main');
 var request = require('request');
 
-var user = require('./api/user-route');
-var registration = require('./api/registration-route');
-var version = require('./api/version-route');
-var logger = require('./api/logging');
-var config = require('./api/common/config');
-var token = require('./api/token');
-var profile = require('./api/profile-route');
+var api = require('./api');
 
 var app = express();
 
 //app.use('/api', function(req, res) {
-//var url = config.getDomain(process.env.ENV) + req.url;
+//var url = api.config.getDomain(process.env.ENV) + req.url;
 //debug('Request: ' + url, req.method);
 //req.pipe(request(url)).pipe(res);
 //});
@@ -29,12 +23,12 @@ app.use(bodyParser.urlencoded({
 
 app.use(cookieParser());
 
-app.use('/api/registration', registration);
-app.use('/api/version', version);
-app.use('/api/user/', user);
+app.use('/api/registration', api.registration);
+app.use('/api/version', api.version);
+app.use('/api/user/', api.user);
 app.use('*', function(req, res, next) {
     debug('checking token', req.headers);
-    token.validate(req.headers).then(function(val) {
+    api.token.validate(req.headers).then(function(val) {
         req.headers.customerId = val.customerId;
         next();
     }, function(err) {
@@ -44,11 +38,11 @@ app.use('*', function(req, res, next) {
         });
     });
 });
-app.use('/api/profile/', profile);
+app.use('/api/profile/', api.profile);
 
 // catch 404 and forward to error handler
 app.use('/', function(req, res, next) {
-    //logger.insert(req.url, req.method);
+    //api.logger.insert(req.url, req.method);
     res.status(404).json({
         code: 'unknownResource',
         description: 'resource not found'
