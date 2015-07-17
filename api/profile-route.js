@@ -24,7 +24,7 @@ router.post('/updatepassword', function(req, res, next) {
     debug('entered profile', req.body);
     profile.updatePassword(req.body).then(
         function(data) {
-            res.json(data);
+            res.end();
         },
         function(err) {
             res.status(401).json(err);
@@ -33,10 +33,10 @@ router.post('/updatepassword', function(req, res, next) {
 });
 
 router.post('/updateemail', function(req, res, next) {
-    debug('entered profile', params);
+    debug('entered profile', req.body);
     profile.updateEmail(req.body).then(
         function(data) {
-            res.json(data);
+            res.end();
         },
         function(err) {
             res.status(401).json(err);

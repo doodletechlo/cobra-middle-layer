@@ -13,7 +13,7 @@ function updatePassword(params) {
         headers: {
             customerId: params.customerId
         },
-        body: params.data
+        body: params
 
     };
     return common.httpService.httpCall(settings);
