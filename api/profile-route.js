@@ -15,18 +15,20 @@ router.get('/getuser', function(req, res, next) {
             res.json(data);
         },
         function(err) {
-            res.status(401).json(err);
-
+            res.status(401).json({
+                error: err,
+                code: 'denied',
+                description: 'Invalid credentials'
+            });
         });
 });
 
 router.post('/updatepassword', function(req, res, next) {
     debug('entered profile', req.body);
-
     if (!req.body.newPassword || !req.body.oldPassword) {
-        res.status(401).json({
+        res.status(400).json({
             code: "missingFields",
-            description:"Required fields: oldPassword, newPassword"
+            description: "Required fields: oldPassword, newPassword"
         });
     } else {
         profile.updatePassword(req.body).then(
@@ -34,22 +36,31 @@ router.post('/updatepassword', function(req, res, next) {
                 res.end();
             },
             function(err) {
-                res.status(401).json(err);
-
+                res.status(err.status || 500).json(err);
             });
     }
 });
 
 router.post('/updateemail', function(req, res, next) {
     debug('entered profile', req.body);
-    profile.updateEmail(req.body).then(
-        function(data) {
-            res.end();
-        },
-        function(err) {
-            res.status(401).json(err);
-
+    if (!req.body.email) {
+        res.status(400).json({
+            code: "missingFields",
+            description: "Required fields: email"
         });
+    } else {
+        profile.updateEmail(req.body).then(
+            function(data) {
+                res.end();
+            },
+            function(err) {
+                res.status(500).json({
+                    error: err,
+                    code: 'error',
+                    description: 'Update error'
+                });
+            });
+    }
 });
 
 module.exports = router;

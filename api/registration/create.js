@@ -3,6 +3,7 @@ var q = require('q');
 var async = require('async');
 
 var common = require('../common');
+var login = require('../login');
 
 module.exports = registerUser;
 
@@ -10,8 +11,9 @@ function registerUser(params) {
     var deferred = q.defer();
     if (!params || !params.username || !params.password || !params.firstName || !params.lastName || !params.email) {
         deferred.reject({
-            error: 'missingFields',
-            description: 'Required Fields: username, password, firstName, lastName, email'
+            code: 'missingFields',
+            description: 'Required Fields: username, password, firstName, lastName, email',
+            status: 400
         });
     } else {
         async.parallel([
@@ -30,14 +32,30 @@ function registerUser(params) {
                     createUser(params).then(function(val) {
                             debug('created user, customerid', val);
                             params.customerId = val.customerId;
-                            createProfile(params).then(function(val) {
-                                    deferred.resolve(val);
+                            createProfile(params).then(function(innerVal) {
+                                    login.getToken(params).then(function(token) {
+                                        deferred.resolve(token);
+                                    }, function(err) {
+                                        deferred.reject(err);
+                                    });
                                 },
                                 function(err) {
+                                    var response = {
+                                        code: 'dataError',
+                                        description: 'Profile creation error',
+                                        status: 500,
+                                        error: err
+                                    };
                                     deferred.reject(err);
                                 });
                         },
                         function(err) {
+                            var response = {
+                                code: 'dataError',
+                                description: 'User creation error',
+                                status: 500,
+                                error: err
+                            };
                             deferred.reject(err);
                         });
                 }
@@ -75,7 +93,13 @@ function checkEmail(params, callback) {
             callback();
         },
         function(err) {
-            callback(err);
+            var response = {
+                code: 'emailTaken',
+                description: 'Email is taken',
+                status: 400,
+                error: err
+            };
+            callback(response);
         });
 }
 
@@ -90,6 +114,12 @@ function checkUsername(params, callback) {
             callback();
         },
         function(err) {
-            callback(err);
+            var response = {
+                code: 'usernameTaken',
+                description: 'Username is taken',
+                status: 400,
+                error: err
+            };
+            callback(response);
         });
 }

@@ -15,8 +15,7 @@ router.post('/login', function(req, res, next) {
             res.json(token);
         },
         function(err) {
-            res.status(401).json(err);
-
+            res.status(err.status||500).json(err);
         });
 });
 

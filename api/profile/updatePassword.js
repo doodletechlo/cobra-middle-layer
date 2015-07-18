@@ -32,13 +32,24 @@ function updatePassword(params) {
     common.httpService.httpCall(checkpassword).then(function() {
             common.httpService.httpCall(update).then(function() {
                 deferred.resolve();
+            }, function(err) {
+                var response = {
+                    code: 'databaseError',
+                    description: 'Unable to perform update',
+                    status: 500,
+                    error: err
+                };
+                deferred.reject(response);
             });
         },
-        function() {
-            deferred.reject({
-                code: "invalidPassword",
-                description: "Wrong password"
-            });
+        function(err) {
+            var response = {
+                code: 'invalidCredentials',
+                description: 'Incorrect password',
+                status: 401,
+                error: err
+            };
+            deferred.reject(response);
         });
     return deferred.promise;
 }

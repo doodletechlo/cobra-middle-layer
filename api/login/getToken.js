@@ -31,11 +31,23 @@ function getToken(params) {
                         deferred.resolve(val);
                     },
                     function(err) {
+                        var response = {
+                            code: 'databaseError',
+                            description: 'Unable to retrieve token',
+                            status: 500,
+                            error: err
+                        };
                         deferred.reject(err);
                     });
             },
             function(err) {
-                deferred.reject(err);
+                var response = {
+                    code: 'denied',
+                    description: 'Invalid credentials',
+                    status: 401,
+                    error: err
+                };
+                deferred.reject(response);
             });
     }
     return deferred.promise;

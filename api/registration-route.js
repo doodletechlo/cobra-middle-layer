@@ -12,11 +12,10 @@ router.post('/create', function(req, res, next) {
     debug('entered registration create', req.body);
     registration.create(req.body).then(
         function(token) {
-            res.send('Registration successful');
+            res.send(token);
         },
         function(err) {
-            res.status(401).json(err);
-
+            res.status(err.status || 500).json(err);
         });
 });
 
