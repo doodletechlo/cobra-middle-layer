@@ -27,8 +27,11 @@ app.use('/api/registration', api.registration);
 app.use('/api/version', api.version);
 app.use('/api/user/', api.user);
 app.use('*', function(req, res, next) {
-    debug('checking token', req.headers);
-    api.token.validate(req.headers).then(function(val) {
+    var params = {
+        token: req.headers.authorization
+    };
+    debug('checking token', params, req.headers);
+    api.token.validate(params).then(function(val) {
         req.body.customerId = val.customerId;
         next();
     }, function(err) {
