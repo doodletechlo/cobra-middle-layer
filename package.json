@@ -11,6 +11,13 @@
     "local": "DEBUG=main ENV=local nodemon -e js --exec sh bin/execute.sh",
     "test": "jasmine-node --autotest --color --verbose spec"
   },
+  "apidoc":{
+    "name": "Cobra Tools",
+    "version":"0.1.0",
+    "description":"Cobra Tools - Api Documentation",
+    "Title":"Cobra API",
+    "url":"http://de74xyk8y8kp9.cloudfront.net"
+    },
   "devDependencies": {
     "jshint": "^2.7.0",
     "mockery": "^1.4.0",
