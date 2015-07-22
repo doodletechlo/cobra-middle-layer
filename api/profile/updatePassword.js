@@ -46,7 +46,7 @@ function updatePassword(params) {
             var response = {
                 code: 'invalidCredentials',
                 description: 'Incorrect password',
-                status: 401,
+                status: 400,
                 error: err
             };
             deferred.reject(response);

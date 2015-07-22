@@ -8,7 +8,7 @@ var router = express.Router();
 // private dependencies
 var login = require('./login');
 /**
- * @api {post} /user/login Log into application
+ * @api {post} /api/user/login Log into application
  * @apiName Login
  * @apiVersion 0.1.0
  * @apiGroup User
@@ -16,6 +16,11 @@ var login = require('./login');
  *
  * @apiParam {String} username user's username
  * @apiParam {String} password user's current password
+ * @apiParamExample {json} Request:
+ *  {
+ *    "username": "testuser1",
+ *    "password" :"password" ,
+ *  }
  *
  * @apiSuccess {String} token Authorization token
  *
