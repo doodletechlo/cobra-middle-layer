@@ -25,6 +25,8 @@ app.use(cookieParser());
 app.use('/api/registration', api.registration);
 app.use('/api/version', api.version);
 app.use('/api/user/', api.user);
+
+// Member section
 app.use('*', function(req, res, next) {
     var params = {
         token: req.headers.authorization
