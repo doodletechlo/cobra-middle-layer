@@ -25,7 +25,13 @@ app.use(cookieParser());
 app.use('/api/registration', api.registration);
 app.use('/api/version', api.version);
 app.use('/api/user/', api.user);
-
+var count = 0;
+setInterval(function(val) {
+    count++;
+}, 5000);
+app.use('/api/testing', function(req, res) {
+        res.send(''+count);
+});
 // Member section
 app.use('*', function(req, res, next) {
     var params = {
